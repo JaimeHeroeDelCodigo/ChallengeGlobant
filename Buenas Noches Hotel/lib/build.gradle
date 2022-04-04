@@ -6,6 +6,23 @@
  * User Manual available at https://docs.gradle.org/7.4.2/userguide/building_java_projects.html
  */
 
+
+
+
+
+/*
+   Acerca de las dependencias en Gradle
+ ***********************************************************
+ 
+ 
+
+
+
+*/
+
+
+
+
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
@@ -28,6 +45,18 @@ dependencies {
     
     // https://mvnrepository.com/artifact/org.springframework/spring-core
     implementation group: 'org.springframework', name: 'spring-core', version: '5.3.17'
+    
+    // Apache commons
+    compile 'org.apache.commons:commons-configuration2:2.7'
+    
+    
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+	annotationProcessor 'org.projectlombok:lombok:1.18.22'
+	
+	testCompileOnly 'org.projectlombok:lombok:1.18.22'
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.22' 
+    
     
 }
 
