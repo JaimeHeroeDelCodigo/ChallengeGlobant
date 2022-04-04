@@ -14,9 +14,8 @@
    Acerca de las dependencias en Gradle
  ***********************************************************
  
- 
-
-
+ Los tipos de dependencias son en tiempo de ejecución y en tiempo de compilación.
+ Ambos tipo se declaran en los respectivos Configurations.
 
 */
 
