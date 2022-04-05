@@ -9,12 +9,35 @@
  
  /*Sobre agregar dependencias en Gradle
  
+ Las dos principales formas de declaración de dependencias son
+ 
+ - En compilación
+ - En tiempo de ejecución (runtime)
+ 
+ Los 5 tipos principales de declaración de dependencias son los siguientes:
  
  
+ implementation -> Indica que la depe ndencia está disponible en compilación.
  
  
+ api -> Declara dependencias indirectas.
+        Indica a los componentes que dependen
+        de esta librería que esta se encuentra
+        disponible.
  
  
+ compileOnly -> Cuando utilizamos librerías como
+                anotaciones durante compilación.
+ 
+ 
+ compileOnlyApi -> Cuando utilizamos apis que se 
+                   ejecutan en algún contenedor y
+                   que nuestra aplicación utiliza
+                   en tiempo de ejecución.
+ 
+ 
+ runTimeOnly -> Las dependencias y librerías solo
+                serán visibles en tiempo de ejecución. 
  */
  
 
