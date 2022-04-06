@@ -1,12 +1,33 @@
-package mx.com.globant.hotel.dao;
+package mx.com.globant.hotel.entities;
 
-public class GuestDao {
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name ="guest")
+public class Guest {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String first_name;
-	private  String last_name;
-	private String email;
-	private TypeGuest type_guest;
 	
+	@Column
+	private String first_name;
+	
+	@Column
+	private String last_name;
+	
+	@Column
+	private String email;
+	
+	@Column
+	private GuestType type_guest;	
+	
+	
+	/*
 	public Long getId() {
 		return id;
 	}
@@ -37,5 +58,5 @@ public class GuestDao {
 	public void setType_guest(TypeGuest type_guest) {
 		this.type_guest = type_guest;
 	}
-
+*/
 }

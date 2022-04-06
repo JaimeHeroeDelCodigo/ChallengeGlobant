@@ -1,13 +1,30 @@
-package mx.com.globant.hotel.dao;
+package mx.com.globant.hotel.entities;
 
-public class HotelDao {
-	
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="hotel")
+public class Hotel {
+	@Id
+	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
+	
+	@Column
 	private String name;
+	
+	@Column
 	private String description;
-	private short stars;
+	
+	@Column
+	private short stars;	
 	
 	
+	/*
 	public Long getId() {
 		return id;
 	}
@@ -32,4 +49,10 @@ public class HotelDao {
 	public void setStars(short stars) {
 		this.stars = stars;
 	}
+	
+	*/
+
+
+
+
 }

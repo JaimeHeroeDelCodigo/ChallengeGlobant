@@ -1,15 +1,38 @@
-package mx.com.globant.hotel.dao;
+package mx.com.globant.hotel.entities;
 
-public class RoomDao {
-	
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "room")
+public class Room {
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
-	private String name;
-	private String description;
-	private short floor;
-	private short max_guests;
-	private RoomType type;
-	private HotelDao hotel;
 	
+	@Column
+	private String name;
+	
+	@Column
+	private String description;
+	
+	@Column
+	private short floor;
+	
+	@Column
+	private short max_guests;
+	
+	@Column
+	private RoomType type;
+	
+	@Column
+	private Hotel hotel;
+	
+	/*	
 	public Long getId() {
 		return id;
 	}
@@ -46,11 +69,13 @@ public class RoomDao {
 	public void setType(RoomType type) {
 		this.type = type;
 	}
-	public HotelDao getHotel() {
+	public Hotel getHotel() {
 		return hotel;
 	}
-	public void setHotel(HotelDao hotel) {
+	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
 	}
+	
+	*/
 
 }
