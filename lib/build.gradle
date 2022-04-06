@@ -9,42 +9,47 @@
  
  /*Sobre agregar dependencias en Gradle
  
- Las dos principales formas de declaración de dependencias son
+ Las dos principales formas de declaraciï¿½n de dependencias son
  
- - En compilación
- - En tiempo de ejecución (runtime)
+ - En compilaciï¿½n
+ - En tiempo de ejecuciï¿½n (runtime)
  
- Los 5 tipos principales de declaración de dependencias son los siguientes:
+ Los 5 tipos principales de declaraciï¿½n de dependencias son los siguientes:
  
  
- implementation -> Indica que la depe ndencia está disponible en compilación.
+ implementation -> Indica que la depe ndencia estï¿½ disponible en compilaciï¿½n.
  
  
  api -> Declara dependencias indirectas.
         Indica a los componentes que dependen
-        de esta librería que esta se encuentra
+        de esta librerï¿½a que esta se encuentra
         disponible.
  
  
- compileOnly -> Cuando utilizamos librerías como
-                anotaciones durante compilación.
+ compileOnly -> Cuando utilizamos librerï¿½as como
+                anotaciones durante compilaciï¿½n.
  
  
  compileOnlyApi -> Cuando utilizamos apis que se 
-                   ejecutan en algún contenedor y
-                   que nuestra aplicación utiliza
-                   en tiempo de ejecución.
+                   ejecutan en algï¿½n contenedor y
+                   que nuestra aplicaciï¿½n utiliza
+                   en tiempo de ejecuciï¿½n.
  
  
- runTimeOnly -> Las dependencias y librerías solo
-                serán visibles en tiempo de ejecución. 
+ runTimeOnly -> Las dependencias y librerï¿½as solo
+                serï¿½n visibles en tiempo de ejecuciï¿½n. 
  */
  
 
 plugins {
     // Apply the java-library plugin for API and implementation separation.
-    id 'java-library'
+    id 'java-library' 
+    id "org.springframework.boot" version "2.6.6"
+    
 }
+
+apply plugin: 'java'
+apply plugin: 'io.spring.dependency-management'
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -64,6 +69,32 @@ dependencies {
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
     
+    // https://mvnrepository.com/artifact/org.postgresql/postgresql
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.3.3'
+    
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc
+    
+    
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-jdbc', version: '2.6.6'
+    
+    
+  
+    
+    
+    
+    // JPA
+    implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+    
+    
+    // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa
+    implementation group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.6.3'
+    
+    
+    
+    
+    
+     
     
     
     //  Lombok

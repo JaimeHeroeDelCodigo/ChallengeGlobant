@@ -1,6 +1,6 @@
 package mx.com.globant.hotel.dao;
 
-public class Hotel {
+public class HotelDao {
 	
 	private Long id;
 	private String name;
