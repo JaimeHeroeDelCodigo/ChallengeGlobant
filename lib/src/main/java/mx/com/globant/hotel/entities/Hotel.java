@@ -1,11 +1,14 @@
 package mx.com.globant.hotel.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,7 +18,7 @@ public class Hotel {
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id;	
+	private Long hotel_id;	
 	@Column(name="name")
 	private String name;	
 	@Column(name="description")
@@ -23,14 +26,14 @@ public class Hotel {
 	@Column(name="stars")
 	private short stars;	
 	
+	@OneToMany(mappedBy="hotel")
+    private Set<Room> rooms;	
 	
-	
-	
-	public Long getId() {
-		return id;
+	public Long getHotel_id() {
+		return hotel_id;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long hotel_id) {
+		this.hotel_id = hotel_id;
 	}
 	public String getName() {
 		return name;

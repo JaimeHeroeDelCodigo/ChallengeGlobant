@@ -1,26 +1,24 @@
 package mx.com.globant.hotel.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
-@Embeddable
-@SecondaryTable(name = "hotel", pkJoinColumns=@PrimaryKeyJoinColumn(name="id_hotel"))
-@SecondaryTable(name = "room_type", pkJoinColumns=@PrimaryKeyJoinColumn(name="id_type"))
 @Table(name = "room")
 public class Room {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;	
+	@Column(name = "room_id")
+	private Long room_id;	
 	@Column
 	private String name;	
 	@Column
@@ -30,20 +28,26 @@ public class Room {
 	@Column
 	private short max_guests;	
 	
-	@Embedded
-	private RoomType type;	
+	@ManyToOne
+	@JoinColumn(name="reservation_id", nullable=false)
+	private Reservation reservation;	
 	
-	@Embedded
-	private Hotel hotel;	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_type", referencedColumnName = "id")
+	private RoomType roomType;	
 	
+	
+	@ManyToOne
+    @JoinColumn(name="hotel_id", nullable=false)
+	private Hotel hotel;
 	
 	
 	
 	public Long getId() {
-		return id;
+		return room_id;
 	}
-	public void setId(Long id) {
-		this.id = id;
+	public void setId(Long room_id) {
+		this.room_id = room_id;
 	}
 	public String getName() {
 		return name;
@@ -70,10 +74,10 @@ public class Room {
 		this.max_guests = max_guests;
 	}
 	public RoomType getType() {
-		return type;
+		return roomType;
 	}
 	public void setType(RoomType type) {
-		this.type = type;
+		this.roomType = type;
 	}
 	public Hotel getHotel() {
 		return hotel;

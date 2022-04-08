@@ -127,7 +127,7 @@ public class HotelController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			Hotel hotel= hotelService.getById(hotelAct.getId())
+			Hotel hotel= hotelService.getById(hotelAct.getHotel_id())
 		                             .orElseThrow( 
 		                            		 ()-> new NullPointerException("El hotel no existe"));			
 			
