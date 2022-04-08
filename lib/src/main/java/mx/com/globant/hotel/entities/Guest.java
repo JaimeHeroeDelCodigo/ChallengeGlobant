@@ -1,33 +1,35 @@
 package mx.com.globant.hotel.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
+@Embeddable
+@SecondaryTable(name="guest_type",pkJoinColumns=@PrimaryKeyJoinColumn(name="id"))
 @Table(name ="guest")
 public class Guest {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Column
-	private String first_name;
-	
-	@Column
-	private String last_name;
-	
-	@Column
-	private String email;
-	
-	@Column
-	private GuestType type_guest;	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;	
+	@Column(name="first_name")
+	private String first_name;	
+	@Column(name="last_name")
+	private String last_name;	
+	@Column(name="email")
+	private String email;	
+	@Embedded
+	private GuestType guest_type;	
 	
 	
-	/*
 	public Long getId() {
 		return id;
 	}
@@ -52,11 +54,11 @@ public class Guest {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public TypeGuest getType_guest() {
-		return type_guest;
+	public GuestType getGuest_type() {
+		return guest_type;
 	}
-	public void setType_guest(TypeGuest type_guest) {
-		this.type_guest = type_guest;
+	public void setType_guest(GuestType guest_type) {
+		this.guest_type = guest_type;
 	}
-*/
+
 }

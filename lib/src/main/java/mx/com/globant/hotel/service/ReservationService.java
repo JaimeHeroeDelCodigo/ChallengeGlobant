@@ -1,6 +1,8 @@
 package mx.com.globant.hotel.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.globant.hotel.entities.Reservation;
@@ -27,10 +29,13 @@ public class ReservationService {
 		return reservationRepository.findAll();
 	}
 	
-	public Reservation getById(Long id) {
-		Reservation reservation = reservationRepository.getById(id);
-		
+	public Optional<Reservation> getById(Long id) {
+		Optional<Reservation> reservation = reservationRepository.findById(id);		
 		return reservation;
+	}
+	
+	public Reservation update(Reservation reservation){
+		return reservationRepository.save(reservation);
 	}
 
 }

@@ -1,38 +1,44 @@
 package mx.com.globant.hotel.entities;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
 @Entity
+@Embeddable
+@SecondaryTable(name = "hotel", pkJoinColumns=@PrimaryKeyJoinColumn(name="id_hotel"))
+@SecondaryTable(name = "room_type", pkJoinColumns=@PrimaryKeyJoinColumn(name="id_type"))
 @Table(name = "room")
 public class Room {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@Column(name = "id")
+	private Long id;	
 	@Column
-	private String name;
-	
+	private String name;	
 	@Column
-	private String description;
-	
+	private String description;	
 	@Column
-	private short floor;
-	
+	private short floor;	
 	@Column
-	private short max_guests;
+	private short max_guests;	
 	
-	@Column
-	private RoomType type;
+	@Embedded
+	private RoomType type;	
 	
-	@Column
-	private Hotel hotel;
+	@Embedded
+	private Hotel hotel;	
 	
-	/*	
+	
+	
+	
 	public Long getId() {
 		return id;
 	}
@@ -75,7 +81,4 @@ public class Room {
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
 	}
-	
-	*/
-
 }

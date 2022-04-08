@@ -1,4 +1,4 @@
-package mx.com.globant.springboot;
+package mx.com.globant.hotel;
 
 import javax.sql.DataSource;
 

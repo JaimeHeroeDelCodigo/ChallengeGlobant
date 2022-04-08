@@ -1,6 +1,8 @@
 package mx.com.globant.hotel.service;
 
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +22,20 @@ public class HotelService{
 			hotelRepository.save(hotel);		
 	}
 	
-	public void delete(Hotel hotel) {
-		hotelRepository.delete(hotel);
+	public void deleteById(Long id_hotel) {
+		hotelRepository.deleteById(id_hotel);		
 	}
 	
 	public List<Hotel> getAll() {		
 		return hotelRepository.findAll();
 	}
 	
-	public Hotel getById(Long id) {
-		Hotel hotel = hotelRepository.getById(id);
-		
+	public Optional<Hotel> getById(Long id) {
+		Optional<Hotel> hotel = hotelRepository.findById(id);		
 		return hotel;
 	}	
+	
+	public Hotel update(Hotel hotel){
+		return hotelRepository.save(hotel);
+	}
 }

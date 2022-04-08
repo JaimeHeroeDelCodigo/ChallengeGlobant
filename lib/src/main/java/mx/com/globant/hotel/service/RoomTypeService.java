@@ -1,6 +1,7 @@
 package mx.com.globant.hotel.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,13 @@ public class RoomTypeService {
 		return roomTypeRepository.findAll();
 	}
 	
-	public RoomType getById(Long id) {
-		RoomType roomType = roomTypeRepository.getById(id);
-		
+	public Optional<RoomType> getById(Long id) {
+		Optional<RoomType> roomType = roomTypeRepository.findById(id);		
 		return roomType;
+	}
+	
+	public RoomType update(RoomType roomType) {
+		return roomTypeRepository.save(roomType);
 	}
 
 
