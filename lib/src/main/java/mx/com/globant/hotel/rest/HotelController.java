@@ -9,10 +9,14 @@ import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import mx.com.globant.hotel.entities.Hotel;
 import mx.com.globant.hotel.service.HotelService;
@@ -28,10 +32,12 @@ public class HotelController {
 	@Autowired
 	private HotelService hotelService;
 	
-	//@RequestMapping(value="hotel/alta", method = RequestMethod.POST, consumes = "application/json")
-	@PostMapping
-	public void altaHotel(@RequestBody Hotel nuevoHotel){		
-		try {
+	@PostMapping(consumes="application/json")
+	@ResponseBody
+	public ResponseEntity<Hotel> altaHotel(@RequestBody Hotel nuevoHotel){		
+		try {	        	
+			System.out.println("\n*****************************************\nEL hotel es\n");
+			System.out.println(nuevoHotel);
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
@@ -40,15 +46,17 @@ public class HotelController {
 			fileHandler.setFormatter(simpleFormatter);		
 			
 			hotelService.create(nuevoHotel);			
-			log.info("\nSe da de alta el hotel " + nuevoHotel.getName());			
+			log.info("\nSe da de alta el hotel " + nuevoHotel.getName());
+			return new ResponseEntity<Hotel>(nuevoHotel,HttpStatus.CREATED);
 			
 		}catch(Exception e) {
 			log.info("Error al dar de alta un hotel: " + e.getMessage());
-			e.printStackTrace();			
+			e.printStackTrace();
+			return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}	
 	}	
 	
-	@RequestMapping(value= "hotel/borrar",method = RequestMethod.DELETE)
+	@DeleteMapping
 	public void borrarHotel(@PathParam(value = "id_hotel") Long  id) {
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
@@ -67,7 +75,7 @@ public class HotelController {
 		}		
 	}
 	
-	@RequestMapping(value= "hotel/consultaId", method = RequestMethod.GET)
+	@RequestMapping(value= "/consultaId", method = RequestMethod.GET)
 	public ResponseEntity<Hotel> consultaHotel(@PathParam(value = "id_hotel") Long  id) {
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
@@ -96,7 +104,7 @@ public class HotelController {
 		
 	}	
 	
-	@RequestMapping(value= "hotel/consultaGeneral", method = RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<List<Hotel>> consultaGeneralHotel() {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
@@ -117,7 +125,7 @@ public class HotelController {
 		
 	}
 	
-	@RequestMapping(value= "hotel/actualizar", method = RequestMethod.PATCH)	
+	@PatchMapping	
 	public ResponseEntity<Hotel> actualizarHotel(@RequestBody Hotel hotelAct) {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
@@ -150,7 +158,6 @@ public class HotelController {
 			e.printStackTrace();
 			return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}		
-		
 	}
 	
 }

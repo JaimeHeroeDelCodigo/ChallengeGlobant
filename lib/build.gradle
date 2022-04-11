@@ -84,7 +84,9 @@ dependencies {
     
     // JPA
     implementation('org.springframework.boot:spring-boot-starter-web')
-	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	//implementation('org.springframework.boot:spring-boot-starter-data-jpa')	
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.6.6'
+	
     
     
     // https://mvnrepository.com/artifact/org.springframework.data/spring-data-jpa

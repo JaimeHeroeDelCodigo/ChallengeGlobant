@@ -15,11 +15,11 @@ public class HotelService{
 	@Autowired 
 	private HotelRepository hotelRepository;
 	
-	public void create(Hotel hotel){
+	public Hotel create(Hotel hotel){
 		if(hotel ==null)
 			throw new NullPointerException("La entidad a guardar no puede ser null");
-		else
-			hotelRepository.save(hotel);		
+		else 
+			return hotelRepository.save(hotel);
 	}
 	
 	public void deleteById(Long id_hotel) {

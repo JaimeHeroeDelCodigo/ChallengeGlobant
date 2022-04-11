@@ -21,8 +21,8 @@ public class GuestService {
 			guestRepository.save(guest);		
 	}
 	
-	public void delete(Guest guest) {
-		guestRepository.delete(guest);
+	public void deleteById(Long id_hotel) {
+		guestRepository.deleteById(id_hotel);		
 	}
 	
 	public List<Guest> getAll() {		
