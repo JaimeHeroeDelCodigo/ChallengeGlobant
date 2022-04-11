@@ -22,20 +22,15 @@ public class Application extends SpringBootServletInitializer{
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 		
-		EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("HotelesBuenasNoches");
-	    EntityManager entityManager = entityManagerFactory.createEntityManager();
-
-	    Hotel hotel = new Hotel();
-	    
-	    //hotel.setDescription("Hotel prueba");
-	    //hotel.setName("TRANSILVANYA");
-	    //hotel.setStars( (short) 5);
-
-	   
-	    
-	    entityManager.getTransaction().begin();
-	    entityManager.persist(hotel);
-	    entityManager.getTransaction().commit();
+		
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("HotelesBuenasNoches");
+	    EntityManager em = emf.createEntityManager();
+	    Hotel hotel = new Hotel();	    
+	    em.getTransaction().begin();
+	    em.persist(hotel);
+	    em.getTransaction().commit();
+	    em.getEntityManagerFactory().getCache().evictAll();		
+		
 	}
 	
 	
