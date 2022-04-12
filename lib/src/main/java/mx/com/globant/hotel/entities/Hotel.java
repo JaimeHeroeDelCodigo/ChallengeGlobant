@@ -11,18 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
-
 @Table(name="hotel")
 public class Hotel implements Serializable {
 	
 	private static final long serialVersionUID = 3399092165316194915L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
-	@Column(name = "id")
-    @JsonIgnore
+	@Column(name = "id")  
 	private Long hotel_id;	
 	@Column(name="name")
 	private String name;	
@@ -32,8 +28,7 @@ public class Hotel implements Serializable {
 	private short stars;	
 	
 	@OneToMany(mappedBy="hotel")
-    private Set<Room> rooms;	
-	
+    private Set<Room> rooms;
 	
 	
 	
@@ -41,15 +36,26 @@ public class Hotel implements Serializable {
 	
 	public Hotel() {
 		super();		
-	}	
+	}
 	
+	
+	
+	public Hotel(String name, String description, short stars, Set<Room> rooms) {
+		super();		
+		this.name = name;
+		this.description = description;
+		this.stars = stars;
+		this.rooms = rooms;
+	}
+
+
+
 	public Hotel(String name, String description, short stars) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.stars = stars;
-	}
-	
+	}	
 	
 	public Long getHotel_id() {
 		return hotel_id;
@@ -80,10 +86,4 @@ public class Hotel implements Serializable {
 		return "Hotel [hotel_id=" + hotel_id + ", name=" + name + ", description=" + description + ", stars=" + stars
 				+ ", rooms=" + rooms + "]";
 	}
-	
-	
-
-
-
-
 }

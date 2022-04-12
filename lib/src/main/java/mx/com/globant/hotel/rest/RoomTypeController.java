@@ -1,9 +1,9 @@
 package mx.com.globant.hotel.rest;
 
-import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,26 +18,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import mx.com.globant.hotel.entities.Hotel;
-import mx.com.globant.hotel.service.HotelService;
+import mx.com.globant.hotel.entities.RoomType;
+import mx.com.globant.hotel.service.RoomTypeService;
 
 @RestController
-@RequestMapping(value="/api/hoteles")
-public class HotelController {
-	
+@RequestMapping(value="api/roomtype")
+public class RoomTypeController {	
 	Logger log= Logger.getLogger("LOG CRUD HBN ");
 	FileHandler fileHandler;	
 	
-	
 	@Autowired
-	private HotelService hotelService;
+	private RoomTypeService roomTypeService;
 	
 	@PostMapping(consumes="application/json")
 	@ResponseBody
-	public ResponseEntity<Hotel> altaHotel(@RequestBody Hotel nuevoHotel){		
+	public ResponseEntity<RoomType> altaTipoDeCuarto(@RequestBody RoomType nuevoRoomType){		
 		try {	        	
 			System.out.println("\n*****************************************\nEL hotel es\n");
-			System.out.println(nuevoHotel);
+			System.out.println(nuevoRoomType);
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
@@ -45,19 +43,19 @@ public class HotelController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
 			
-			hotelService.create(nuevoHotel);			
-			log.info("\nSe da de alta el hotel " + nuevoHotel.getName());
-			return new ResponseEntity<Hotel>(nuevoHotel,HttpStatus.CREATED);
+			roomTypeService.create(nuevoRoomType);			
+			log.info("\nSe da de alta el tipo de cuarto " + nuevoRoomType.getName());
+			return new ResponseEntity<RoomType>(nuevoRoomType,HttpStatus.CREATED);
 			
 		}catch(Exception e) {
-			log.info("Error al dar de alta un hotel: " + e.getMessage());
+			log.info("Error al dar de alta un tipo de cuarto: " + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);			
+			return new ResponseEntity<RoomType>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}	
 	}	
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<HttpStatus> borrarHotel(@PathVariable Long id) {
+	public ResponseEntity<HttpStatus>  borrarTipoDeCuarto(@PathVariable Long id) {
 		try {			
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -66,19 +64,19 @@ public class HotelController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
 			
-			hotelService.deleteById(id);			
-			log.info("\nSe da de baja el hotel con id " + id);
+			roomTypeService.deleteById(id);			
+			log.info("\nSe da de baja el tipo de cuarto con id:" + id);
 			return new ResponseEntity<HttpStatus>(HttpStatus.OK);
 			
 		}catch(Exception e) {
-			log.info("Error al dar de baja un hotel: " + e.getMessage());			
+			log.info("Error al dar de baja un tipo de cuarto: " + e.getMessage());			
 			e.printStackTrace();
 			return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}		
 	}
 	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Hotel> consultaHotel(@PathVariable Long  id) {
+	public ResponseEntity<RoomType> consultaTipoDeCuarto(@PathVariable Long  id) {
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -87,27 +85,26 @@ public class HotelController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
 			
-			 Hotel hotel = hotelService.getById(id)
-					                   .orElseThrow(
-					                		   ()->new NullPointerException("No existe el hotel con el id indicado"));			 
-			 log.info("\nSe realiza la consulta el hotel con id " + id);
-			 return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);			 			
+			RoomType roomType = roomTypeService.getById(id)
+					                           .orElseThrow(
+					                		        ()->new NullPointerException("No existe el tipo de cuarto con el id indicado"));			 
+			log.info("\nSe realiza la consulta del tipo de cuarto con id " + id);
+			return new ResponseEntity<RoomType>(roomType, HttpStatus.OK);			 			
 			
 		}catch(NullPointerException e) {
 			log.info("Valor null devuelto por la base al realizar la consulta por id " +id + "\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Hotel>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<RoomType>(HttpStatus.NOT_FOUND);
 		}		
 		catch(Exception e) {
 			log.info("Error al dar de realizar consulta por id " +id + "\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}			
-		
+			return new ResponseEntity<RoomType>(HttpStatus.INTERNAL_SERVER_ERROR);		
+		}		
 	}	
 	
 	@GetMapping
-	public ResponseEntity<List<Hotel>> consultaGeneralHotel() {		
+	public ResponseEntity<List<RoomType>> consultaGeneralTipoDeCuarto() {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -115,20 +112,20 @@ public class HotelController {
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
-			ArrayList<Hotel> listaHotel = (ArrayList<Hotel>) hotelService.getAll();			
-			log.info("\nSe realiza la consulta de hoteles");			 
-			return new ResponseEntity<List<Hotel>>(listaHotel, HttpStatus.OK);			 			
+			ArrayList<RoomType> listaTiposDeCuarto = (ArrayList<RoomType>) roomTypeService.getAll();			
+			log.info("\nSe realiza la consulta de tipos de cuarto");			 
+			return new ResponseEntity<List<RoomType>>(listaTiposDeCuarto, HttpStatus.OK);			 			
 			
 		}catch(Exception e) {
 			log.info("Error al realizar la consulta general\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<List<Hotel>>(HttpStatus.INTERNAL_SERVER_ERROR);		
+			return new ResponseEntity<List<RoomType>>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}
 		
 	}
 	
 	@PatchMapping	
-	public ResponseEntity<Hotel> actualizarHotel(@RequestBody Hotel hotelAct) {		
+	public ResponseEntity<RoomType> actualizarHotel(@RequestBody RoomType roomTypeAct) {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -137,29 +134,24 @@ public class HotelController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			Hotel hotel= hotelService.getById(hotelAct.getHotel_id())
-		                             .orElseThrow( 
-		                            		 ()-> new NullPointerException("El hotel no existe"));			
+			RoomType roomType = roomTypeService.getById(roomTypeAct.getId())
+		                                       .orElseThrow( 
+		                            		         ()-> new NullPointerException("El tipo de cuarto no existe"));			
 			
-			hotel.setName(hotelAct.getName());
-			hotel.setDescription(hotelAct.getDescription());
-			hotel.setStars(hotelAct.getStars());
-			
-			hotelService.update(hotel);			
-			log.info("\nSe realiza la actualización del hotel");			 
-			return new ResponseEntity<Hotel>(hotel, HttpStatus.OK);	 			
-			
+			roomType.setName(roomTypeAct.getName());			
+			roomTypeService.update(roomType);			
+			log.info("\nSe realiza la actualización del tipo de cuarto");			 
+			return new ResponseEntity<RoomType>(roomType, HttpStatus.OK);		
 			 
 		}catch(NullPointerException e) {
-			log.info("Error al actualizar hotel\n" + e.getMessage());
+			log.info("Error al actualizar el tipo de cuarto\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Hotel>(HttpStatus.NOT_FOUND);			
+			return new ResponseEntity<RoomType>(HttpStatus.NOT_FOUND);			
 		}		
 		catch(Exception e) {
-			log.info("Error al actualizar hotel\n" + e.getMessage());
+			log.info("Error al actualizar el tipo de cuarto\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Hotel>(HttpStatus.INTERNAL_SERVER_ERROR);		
+			return new ResponseEntity<RoomType>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}		
 	}
-	
 }

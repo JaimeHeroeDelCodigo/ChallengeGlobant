@@ -22,8 +22,8 @@ public class RoomTypeService {
 			roomTypeRepository.save(roomType);		
 	}
 	
-	public void delete(RoomType RoomType) {
-		roomTypeRepository.delete(RoomType);
+	public void deleteById(Long id) {
+		roomTypeRepository.deleteById(id);  ;
 	}
 	
 	public List<RoomType> getAll() {		

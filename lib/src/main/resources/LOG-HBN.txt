@@ -1,3 +1,0 @@
-abr 11, 2022 6:07:46 PM mx.com.globant.hotel.rest.HotelController consultaGeneralHotel
-INFO: 
-Se realiza la consulta de hoteles

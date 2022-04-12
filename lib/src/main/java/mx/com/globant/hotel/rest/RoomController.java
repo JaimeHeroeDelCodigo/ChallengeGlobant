@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-import javax.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +29,7 @@ public class RoomController {
 	FileHandler fileHandler;	
 	
 	@Autowired
-	private RoomService roomService;
-	
+	private RoomService roomService;	
 	
 	@PostMapping
 	public ResponseEntity<Room> altaRoom(@RequestBody Room nuevoRoom){		
@@ -45,8 +43,7 @@ public class RoomController {
 			
 			roomService.create(nuevoRoom);			
 			log.info("\nSe da de alta el cuarto " + nuevoRoom.getName());
-			return new ResponseEntity<Room>(nuevoRoom,HttpStatus.CREATED);
-			
+			return new ResponseEntity<Room>(nuevoRoom,HttpStatus.CREATED);			
 		}catch(Exception e){
 			log.info("Error al dar de alta un cuarto: " + e.getMessage());
 			e.printStackTrace();
@@ -54,8 +51,8 @@ public class RoomController {
 		}		
 	}	
 	
-	@DeleteMapping
-	public void borrarRoom(@PathParam (value="id_room") Long id){		
+	@DeleteMapping("/{id}")
+	public void borrarRoom(@PathVariable Long id){		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -72,8 +69,8 @@ public class RoomController {
 		}		
 	}
 	
-	@RequestMapping(value= "/consultaId", method = RequestMethod.GET)
-	public ResponseEntity<Room> consultaRoom(@PathVariable(value="id_room") Long id){
+	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Room> consultaRoom(@PathVariable Long id){
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -97,8 +94,7 @@ public class RoomController {
 			e.printStackTrace();			
 			return new ResponseEntity<Room>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}		
-	}
-	
+	}	
 	
 	@GetMapping
 	public ResponseEntity<List<Room>> consultaGeneralCuartos(){
@@ -148,7 +144,7 @@ public class RoomController {
 			return new ResponseEntity<Room>(roomAct, HttpStatus.OK);			
 			
 		}catch(NullPointerException e) {
-			log.info("Error al actualizar invitado\n" + e.getMessage());
+			log.info("Error al actualizar cuarto\n" + e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);	
 		}		
