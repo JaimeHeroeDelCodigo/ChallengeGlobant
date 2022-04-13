@@ -27,21 +27,20 @@ public class Room {
 	private short floor;	
 	@Column
 	private short max_guests;	
+	@Column 
+	private Long idHotel;	
 	
 	@ManyToOne
-	@JoinColumn(name="reservation_id", nullable=false)
+	@JoinColumn(name="reservation_id", nullable=true)
 	private Reservation reservation;	
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "id_type", referencedColumnName = "id")
-	private RoomType roomType;	
-	
+	private RoomType roomType;
 	
 	@ManyToOne
-    @JoinColumn(name="hotel_id", nullable=false)
+    @JoinColumn(name="hotel_id", nullable=true)
 	private Hotel hotel;
-	
-	
 	
 	public Long getId() {
 		return room_id;
@@ -85,4 +84,17 @@ public class Room {
 	public void setHotel(Hotel hotel) {
 		this.hotel = hotel;
 	}
+	public Long getIdHotel() {
+		return idHotel;
+	}
+	public void setIdHotel(Long idHotel) {
+		this.idHotel = idHotel;
+	}	
+	
+	@Override
+	public String toString() {
+		return "Room [room_id=" + room_id + ", name=" + name + ", description=" + description + ", floor=" + floor
+				+ ", max_guests=" + max_guests + ", idHotel=" + idHotel + ", reservation=" + reservation + ", roomType="
+				+ roomType + ", hotel=" + hotel + "]";
+	}	
 }

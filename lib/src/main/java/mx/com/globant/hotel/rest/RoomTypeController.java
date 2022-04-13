@@ -28,8 +28,7 @@ public class RoomTypeController {
 	FileHandler fileHandler;	
 	
 	@Autowired
-	private RoomTypeService roomTypeService;
-	
+	private RoomTypeService roomTypeService;	
 	@PostMapping(consumes="application/json")
 	@ResponseBody
 	public ResponseEntity<RoomType> altaTipoDeCuarto(@RequestBody RoomType nuevoRoomType){		

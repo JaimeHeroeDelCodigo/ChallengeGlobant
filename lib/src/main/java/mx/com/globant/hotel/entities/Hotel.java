@@ -2,7 +2,6 @@ package mx.com.globant.hotel.entities;
 
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,8 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="hotel")
-public class Hotel implements Serializable {
-	
+public class Hotel implements Serializable {	
 	private static final long serialVersionUID = 3399092165316194915L;
 	@Id
 	@GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -26,36 +24,8 @@ public class Hotel implements Serializable {
 	private String description;	
 	@Column(name="stars")
 	private short stars;	
-	
 	@OneToMany(mappedBy="hotel")
-    private Set<Room> rooms;
-	
-	
-	
-	
-	
-	public Hotel() {
-		super();		
-	}
-	
-	
-	
-	public Hotel(String name, String description, short stars, Set<Room> rooms) {
-		super();		
-		this.name = name;
-		this.description = description;
-		this.stars = stars;
-		this.rooms = rooms;
-	}
-
-
-
-	public Hotel(String name, String description, short stars) {
-		super();
-		this.name = name;
-		this.description = description;
-		this.stars = stars;
-	}	
+    private Set<Room> rooms;	
 	
 	public Long getHotel_id() {
 		return hotel_id;
@@ -80,6 +50,13 @@ public class Hotel implements Serializable {
 	}
 	public void setStars(short stars) {
 		this.stars = stars;
+	}	
+	
+	public Set<Room> getRooms() {
+		return rooms;
+	}
+	public void setRooms(Set<Room> rooms) {
+		this.rooms = rooms;
 	}
 	@Override
 	public String toString() {
