@@ -18,8 +18,8 @@ public class RoomTypeService {
 	public void create(RoomType roomType){
 		if(roomType ==null)
 			throw new NullPointerException("La entidad a guardar no puede ser null");
-		else
-			roomTypeRepository.save(roomType);		
+		else 
+			roomTypeRepository.save(roomType);	
 	}
 	
 	public void deleteById(Long id) {

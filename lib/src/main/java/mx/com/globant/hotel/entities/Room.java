@@ -28,7 +28,8 @@ public class Room {
 	@Column
 	private short max_guests;	
 	@Column 
-	private Long idHotel;	
+	private Long idHotel;
+	 
 	
 	@ManyToOne
 	@JoinColumn(name="reservation_id", nullable=true)
@@ -39,8 +40,8 @@ public class Room {
 	private RoomType roomType;
 	
 	@ManyToOne
-    @JoinColumn(name="hotel_id", nullable=true)
-	private Hotel hotel;
+    @JoinColumn(name="hotel_id", nullable=true) 
+	private Hotel hotel;	
 	
 	public Long getId() {
 		return room_id;

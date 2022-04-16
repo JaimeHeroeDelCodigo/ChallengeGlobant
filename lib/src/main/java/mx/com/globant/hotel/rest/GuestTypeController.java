@@ -17,43 +17,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import mx.com.globant.hotel.entities.Guest;
-import mx.com.globant.hotel.service.GuestService;
+import mx.com.globant.hotel.entities.GuestType;
+import mx.com.globant.hotel.service.GuestTypeService;
 
 @RestController
-@RequestMapping(value="/api/guest")
-public class GuestController {
-	
+@RequestMapping(value="/api/guesttype")
+public class GuestTypeController {	
 	Logger log= Logger.getLogger("LOG CRUD HBN ");
-	FileHandler fileHandler;	
+	FileHandler fileHandler;
 	
 	@Autowired
-	private GuestService guestService;	
+	private GuestTypeService guestTypeService;	
 
 	@PostMapping
-	public ResponseEntity<Guest> altaGuest(@RequestBody Guest nuevoGuest){		
+	public ResponseEntity<GuestType> altaGuestType(@RequestBody GuestType nuevoGuestType){		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
+	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			guestService.create(nuevoGuest);			
-			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
-			return new ResponseEntity<Guest>(nuevoGuest,HttpStatus.CREATED);
-			
+			guestTypeService.create(nuevoGuestType);			
+			log.info("\nSe da de alta el tipo de invitado " + nuevoGuestType.getName());
+			return new ResponseEntity<GuestType>(nuevoGuestType,HttpStatus.CREATED);			
 		}catch(Exception e){
-			log.info("Error al dar de alta un invitado: " + e.getMessage());
+			log.info("Error al dar de alta un tipo de invitado: " + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+			return new ResponseEntity<GuestType>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
 	}
 	
 	@DeleteMapping("/{id}")
-	public void borrarGuest(@PathVariable Long  id) {
+	public void borrarGuestType(@PathVariable Long id) {
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -62,18 +58,18 @@ public class GuestController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
 			
-			guestService.deleteById(id);			
-			log.info("\nSe da de baja el invitado con id " + id);			
+			guestTypeService.deleteById(id);
+						
+			log.info("\nSe da de baja el tipo de invitado con id " + id);			
 			
 		}catch(Exception e) {
-			log.info("Error al dar de baja a un invitado: " + e.getMessage());
+			log.info("Error al dar de baja a un tipo de invitado: " + e.getMessage());
 			e.printStackTrace();
 		}		
 	}
 	
-	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Guest> consultaGuest(@PathVariable Long  id) {
+	public ResponseEntity<GuestType> consultaGuestType(@PathVariable Long  id) {
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -82,29 +78,28 @@ public class GuestController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
 			
-			 Guest guest = guestService
+			 GuestType guestType = guestTypeService
 					                   .getById(id)
 					                   .orElseThrow(
-					                		   ()->new NullPointerException("No existe el invitado con el id indicado"));			 
-			 log.info("\nSe realiza la consulta el invitado con id " + id);
-			 return new ResponseEntity<Guest>(guest, HttpStatus.OK);			 			
+					                		   ()->new NullPointerException("No existe el invitado "
+					                		   		                     + "con el id indicado"));			 
+			 log.info("\nSe realiza la consulta del tipo de invitado con id " + id);
+			 return new ResponseEntity<GuestType>(guestType, HttpStatus.OK);			 			
 			
 		}catch(NullPointerException e) {
 			log.info("Valor null devuelto por la base al realizar la consulta por id " + id + "\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.NOT_FOUND);
+			return new ResponseEntity<GuestType>(HttpStatus.NOT_FOUND);
 		}		
 		catch(Exception e) {
 			log.info("Error al dar de realizar consulta por id " +id + "\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}			
-		
-	}
-	
+			return new ResponseEntity<GuestType>(HttpStatus.INTERNAL_SERVER_ERROR);		
+		}		
+	}	
 	
 	@GetMapping
-	public ResponseEntity<List<Guest>> consultaGeneralInvitados() {		
+	public ResponseEntity<List<GuestType>> consultaGeneralTipoInvitado() {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -112,20 +107,19 @@ public class GuestController {
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
-			ArrayList<Guest> listaInvitados = (ArrayList<Guest>) guestService.getAll();			
-			log.info("\nSe realiza la consulta de los invitados");			 
-			return new ResponseEntity<List<Guest>>(listaInvitados, HttpStatus.OK);			 			
+			ArrayList<GuestType> listaInvitados = (ArrayList<GuestType>) guestTypeService.getAll();			
+			log.info("\nSe realiza la consulta de los tipos de invitado");			 
+			return new ResponseEntity<List<GuestType>>(listaInvitados, HttpStatus.OK);			 			
 			
 		}catch(Exception e) {
 			log.info("Error al realizar la consulta general\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<List<Guest>>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}
-		
-	}
+			return new ResponseEntity<List<GuestType>>(HttpStatus.INTERNAL_SERVER_ERROR);		
+		}		
+	}	
 	
 	@PatchMapping	
-	public ResponseEntity<Guest> actualizarHotel(@RequestBody Guest guestAct) {		
+	public ResponseEntity<GuestType> actualizarHotel(@RequestBody GuestType guestTypeAct) {		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -134,25 +128,23 @@ public class GuestController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			Guest guest = guestService.getById(guestAct.getId())
+			GuestType guestType = guestTypeService
+					                 .getById(guestTypeAct.getId())
 		                             .orElseThrow( 
-		                            		 ()-> new NullPointerException("El invitado no existe"));			
+		                            		 ()-> new NullPointerException("El tipo de invitado no existe"));			
+			guestType.setName(guestTypeAct.getName());
 			
-			guest.setFirst_name(guestAct.getFirst_name());			
-			guest.setLast_name(guestAct.getLast_name());
-			guest.setEmail(guestAct.getEmail());			
-			guestService.update(guest);			
-			log.info("\nSe realiza la actualización del invitado");			 
-			return new ResponseEntity<Guest>(guest, HttpStatus.OK);			 
+			log.info("\nSe realiza la actualización del tipo de invitado");			 
+			return new ResponseEntity<GuestType>(guestType, HttpStatus.OK);			 
 		}catch(NullPointerException e) {
-			log.info("Error al actualizar invitado\n" + e.getMessage());
+			log.info("Error al actualizar el tipo de invitado\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.NOT_FOUND);			
+			return new ResponseEntity<GuestType>(HttpStatus.NOT_FOUND);			
 		}		
 		catch(Exception e) {
-			log.info("Error al actualizar invitado\n" + e.getMessage());
+			log.info("Error al actualizar el tipo de invitado\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);		
+			return new ResponseEntity<GuestType>(HttpStatus.INTERNAL_SERVER_ERROR);		
 		}		
 	}
 }

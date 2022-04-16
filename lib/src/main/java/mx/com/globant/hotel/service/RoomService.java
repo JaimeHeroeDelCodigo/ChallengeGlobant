@@ -7,8 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.globant.hotel.entities.Room;
 import mx.com.globant.hotel.exception.RoomAlreadyExistsException;
+import mx.com.globant.hotel.exception.RoomInReservation;
 import mx.com.globant.hotel.entities.Hotel;
+import mx.com.globant.hotel.entities.Reservation;
+import mx.com.globant.hotel.repository.ReservationRepository;
 import mx.com.globant.hotel.repository.RoomRepository;
+import java.util.ArrayList;
 
 @Service
 public class RoomService {	
@@ -16,6 +20,9 @@ public class RoomService {
 	private RoomRepository roomRepository;	
 	@Autowired
 	private HotelService hotelService;
+	
+	@Autowired 
+	private ReservationRepository reservationRepository;
 	
 	public Room create(Room room) throws RoomAlreadyExistsException{
 		if(room ==null)
@@ -39,8 +46,23 @@ public class RoomService {
 		}
 	}	
 	
-	public void deleteById(Long id) {
-		roomRepository.deleteById(id);
+	public void deleteById(Long id) throws RoomInReservation {		
+		Long idHotel = roomRepository
+				         .findById(id)
+				         .orElseThrow(
+				             ()-> new NullPointerException("El cuarto con id " + id + "no existe"))
+				         .getIdHotel();		
+	
+		ArrayList<Long> ids = new ArrayList<Long>();
+		reservationRepository
+		            .findAll()
+		            .stream()
+		            .map(Reservation::getRooms)
+		            .forEach(s -> extraerIds(ids,s));
+		if( ids.contains(idHotel))
+			throw new RoomInReservation();
+		else
+			roomRepository.deleteById(id);
 	}
 	
 	public List<Room> getAll() {		
@@ -55,4 +77,10 @@ public class RoomService {
 	public Room update(Room room) {
 		return roomRepository.save(room);
 	}
+	
+	
+	private void extraerIds( ArrayList<Long> lista,Set<Room> r){
+		r.forEach(  c -> 
+		              lista.add( c.getId()));		
+	}	
 }

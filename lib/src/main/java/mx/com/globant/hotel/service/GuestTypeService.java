@@ -20,8 +20,8 @@ public class GuestTypeService {
 			guestTypeRepository.save(guestType);		
 	}
 	
-	public void delete(GuestType GuestType) {
-		guestTypeRepository.delete(GuestType);
+	public void deleteById(Long id) {
+		guestTypeRepository.deleteById(id);
 	}
 	
 	public List<GuestType> getAll() {		

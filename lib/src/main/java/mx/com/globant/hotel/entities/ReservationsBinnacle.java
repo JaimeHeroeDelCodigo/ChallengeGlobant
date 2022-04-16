@@ -8,8 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name ="bitacora_reservaciones")
-public class bitacora_reservaciones {	
+@Table(name ="ReservationsBinnacle")
+public class ReservationsBinnacle {	
 	
 	@Id
 	@Column(name ="id")

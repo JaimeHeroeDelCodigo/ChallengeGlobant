@@ -17,23 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import mx.com.globant.hotel.entities.Room;
-import mx.com.globant.hotel.exception.RoomInReservation;
-import mx.com.globant.hotel.service.RoomService;
+import mx.com.globant.hotel.entities.Reservation;
+import mx.com.globant.hotel.exception.GuestNotExistingException;
+import mx.com.globant.hotel.exception.RoomNotExistingException;
+import mx.com.globant.hotel.service.ReservationService;
 
 @RestController
-@RequestMapping(value="/api/room")
-
-public class RoomController {
-	
+@RequestMapping(value="/api/reservations")
+public class ReservationController {	
 	Logger log= Logger.getLogger("LOG CRUD HBN ");
 	FileHandler fileHandler;	
 	
 	@Autowired
-	private RoomService roomService;	
-	
+	private ReservationService reservationService;	
+
 	@PostMapping
-	public ResponseEntity<Room> altaRoom(@RequestBody Room nuevoRoom){		
+	public ResponseEntity<Reservation> altaGuest(@RequestBody Reservation nuevoReservation){		
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -42,15 +41,23 @@ public class RoomController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			roomService.create(nuevoRoom);			
-			log.info("\nSe da de alta el cuarto " + nuevoRoom.getName());
-			return new ResponseEntity<Room>(nuevoRoom,HttpStatus.CREATED);			
-		}catch(Exception e){
-			log.info("Error al dar de alta un cuarto: " + e.getMessage());
+			reservationService.create(nuevoReservation);			
+			log.info("\nSe registra la reservación con id " + nuevoReservation.getReservation_id());
+			return new ResponseEntity<Reservation>(nuevoReservation,HttpStatus.CREATED);			
+		}catch(GuestNotExistingException e) {
+			log.info("Algunos invitados de la reservación no existe: " + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Room>(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<Reservation>(HttpStatus.NO_CONTENT);
+		}catch(RoomNotExistingException e) {
+			log.info("Algunos cuartos de la reservación no existe: " + e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}catch(Exception e) {
+			log.info("Error al registrar una reservación: " + e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
-	}	
+	}
 	
 	@DeleteMapping("/{id}")
 	public void borrarRoom(@PathVariable Long id){		
@@ -61,20 +68,17 @@ public class RoomController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			roomService.deleteById(id);
-			log.info("\nSe da de baja el cuarto con id: " + id);	
+			reservationService.deleteById(id);
+			log.info("\nSe da de baja la reservación: " + id);	
 		
-		}catch(RoomInReservation e) {
-			log.info("El cuarto esta reservado: " + e.getMessage());
-			e.printStackTrace();
 		}catch(Exception e) {
-			log.info("Error al dar de baja el cuarto: " + e.getMessage());
+			log.info("Error al dar de baja la reservación: " + e.getMessage());
 			e.printStackTrace();			
 		}		
-	}
+	}	
 	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
-	public ResponseEntity<Room> consultaRoom(@PathVariable Long id){
+	public ResponseEntity<Reservation> consultaReservation(@PathVariable Long id){
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -82,26 +86,26 @@ public class RoomController {
 			SimpleFormatter simpleFormatter = new  SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			Room cuartoConsulta = roomService.getById(id)
+			Reservation reservationConsulta = reservationService.getById(id)
 					                         .orElseThrow(
 													() -> new NullPointerException(""));
 			
-			log.info("\nSe consulta el cuarto con id: " + id);
-			return new ResponseEntity<Room>(cuartoConsulta,HttpStatus.OK); 
+			log.info("\nSe consulta la reservación con id: " + id);
+			return new ResponseEntity<Reservation>(reservationConsulta,HttpStatus.OK); 
 		}catch(NullPointerException e) {
 			
 			log.info("Valor null devuelto por la base al realizar la consulta por id " +id + "\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);			
+			return new ResponseEntity<Reservation>(HttpStatus.NOT_FOUND);			
 		}catch(Exception e) {
 			log.info("Error al consultar del cuarto con id: " + id + e.getMessage());
 			e.printStackTrace();			
-			return new ResponseEntity<Room>(HttpStatus.INTERNAL_SERVER_ERROR);			
+			return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}		
 	}	
 	
 	@GetMapping
-	public ResponseEntity<List<Room>> consultaGeneralCuartos(){
+	public ResponseEntity<List<Reservation>> consultaGeneralReservaciones(){
 		try {
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
@@ -109,19 +113,19 @@ public class RoomController {
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);		
-			ArrayList<Room> listacuartos = (ArrayList<Room>) roomService.getAll();			
-			log.info("\nSe realiza la consulta de los invitados");			 
-			return new ResponseEntity<List<Room>>(listacuartos, HttpStatus.OK);
+			ArrayList<Reservation> listareservacion = (ArrayList<Reservation>) reservationService.getAll();			
+			log.info("\nSe realiza la consulta de las reservaciones");			 
+			return new ResponseEntity<List<Reservation>>(listareservacion, HttpStatus.OK);
 			
 		}catch(Exception e) {
 			log.info("Error al realizar la consulta general\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<List<Room>>(HttpStatus.INTERNAL_SERVER_ERROR);			
+			return new ResponseEntity<List<Reservation>>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}		
-	}
+	}	
 	
 	@PatchMapping	
-	public ResponseEntity<Room> actualizarCuarto(@RequestBody Room roomAct) {
+	public ResponseEntity<Reservation> actualizarReservacion(@RequestBody Reservation reservationAct) {
 		try {
 			
 			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
@@ -131,31 +135,30 @@ public class RoomController {
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
 			
-			Room room = roomService.getById(roomAct.getId())
+			Reservation reservation = reservationService.getById(reservationAct.getReservation_id())
 			                .orElseThrow( 
-			               		 ()-> new NullPointerException("El cuarto no existe"));
+			               		 ()-> new NullPointerException("La reservación no existe"));			
 			
-			room.setDescription(roomAct.getDescription());
-			room.setFloor(roomAct.getFloor());
-			room.setHotel(roomAct.getHotel());
-			room.setMax_guests(roomAct.getMax_guests());
-			room.setName(roomAct.getName());
-			room.setType(roomAct.getType());
-			
-			roomService.update(roomAct);
-			
-			log.info("\nSe realiza la actualización del cuarto");			 
-			return new ResponseEntity<Room>(room, HttpStatus.OK);			
+			reservation.setCheck_in(reservationAct.getCheck_in());
+			reservation.setCheck_out(reservationAct.getCheck_out());
+			reservation.setEnd_date(reservationAct.getEnd_date());
+			reservation.setGuests(reservationAct.getGuests());
+			reservation.setReservation_id(reservationAct.getReservation_id());
+			reservation.setRooms(reservationAct.getRooms());
+			reservation.setStart_date(reservationAct.getStart_date());			
+			reservationService.update(reservation);
+			log.info("\nSe realiza la actualización la reservación");			 
+			return new ResponseEntity<Reservation>(reservation, HttpStatus.OK);			
 			
 		}catch(NullPointerException e) {
-			log.info("Error al actualizar cuarto\n" + e.getMessage());
+			log.info("Error al actualizar reservación\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Room>(HttpStatus.NOT_FOUND);	
+			return new ResponseEntity<Reservation>(HttpStatus.NOT_FOUND);	
 		}		
 		catch(Exception e) {
-			log.info("Error al actualizar cuarto\n" + e.getMessage());
+			log.info("Error al actualizar reservación\n" + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Room>(HttpStatus.INTERNAL_SERVER_ERROR);			
+			return new ResponseEntity<Reservation>(HttpStatus.INTERNAL_SERVER_ERROR);			
 		}		
-	}
+	}	
 }

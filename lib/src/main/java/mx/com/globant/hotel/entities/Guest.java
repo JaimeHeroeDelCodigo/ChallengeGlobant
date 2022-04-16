@@ -24,13 +24,15 @@ public class Guest {
 	private String last_name;	
 	@Column(name="email")
 	private String email;
+	@Column(name="vip")
+	private Boolean vip;
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="type_id",referencedColumnName="id")
 	private GuestType guestType;
 	
 	@ManyToOne
-	@JoinColumn(name="reservation_id", nullable=false)
+	@JoinColumn(name="reservation_id", nullable=true)
 	private Reservation reservation;	
 	
 	public Long getId() {
@@ -57,6 +59,11 @@ public class Guest {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public Boolean getVip() {
+		return vip;
+	}
+	public void setVip(Boolean vip) {
+		this.vip = vip;
+	}	
 
 }
