@@ -17,8 +17,14 @@ public class GuestService {
 	public void create(Guest guest){
 		if(guest ==null)
 			throw new NullPointerException("La entidad a guardar no puede ser null");
-		else
-			guestRepository.save(guest);		
+		else {
+			
+			
+			
+			
+			guestRepository.save(guest);
+		}
+					
 	}
 	
 	public void deleteById(Long id_hotel) {

@@ -24,7 +24,7 @@ public class Guest {
 	private String last_name;	
 	@Column(name="email")
 	private String email;
-	@Column(name="vip")
+	@Column(columnDefinition="boolean default false", name="vip")
 	private Boolean vip;
 	
 	@OneToOne(cascade = CascadeType.ALL)

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import mx.com.globant.hotel.entities.Room;
+import mx.com.globant.hotel.exception.GuestLimitExceededException;
 import mx.com.globant.hotel.exception.RoomAlreadyExistsException;
 import mx.com.globant.hotel.exception.RoomInReservation;
 import mx.com.globant.hotel.entities.Hotel;
@@ -51,14 +52,14 @@ public class RoomService {
 				         .findById(id)
 				         .orElseThrow(
 				             ()-> new NullPointerException("El cuarto con id " + id + "no existe"))
-				         .getIdHotel();		
+				                       .getIdHotel();		
 	
 		ArrayList<Long> ids = new ArrayList<Long>();
 		reservationRepository
 		            .findAll()
 		            .stream()
 		            .map(Reservation::getRooms)
-		            .forEach(s -> extraerIds(ids,s));
+		            .forEach(s -> extractIds(ids,s));
 		if( ids.contains(idHotel))
 			throw new RoomInReservation();
 		else
@@ -79,8 +80,18 @@ public class RoomService {
 	}
 	
 	
-	private void extraerIds( ArrayList<Long> lista,Set<Room> r){
+	private void extractIds( ArrayList<Long> lista,Set<Room> r){
 		r.forEach(  c -> 
 		              lista.add( c.getId()));		
-	}	
+	}
+	
+	private void addKids(Short k,Room room) throws GuestLimitExceededException{
+		if (k>room.getMax_guests())
+			throw new GuestLimitExceededException();
+		else {
+			Short actKids = room.getNoKids();
+		   	room.setNoKids((short) (actKids + k));			
+		}	   	
+	}
+
 }

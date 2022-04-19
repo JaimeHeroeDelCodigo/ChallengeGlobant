@@ -11,9 +11,13 @@ import javax.persistence.Table;
 @Table(name ="ReservationsBinnacle")
 public class ReservationsBinnacle {	
 	
+	
+	// Id de la reservación. 
+	// No es generatdo automáticamente
 	@Id
-	@Column(name ="id")
+	@Column(name ="id")	
 	private Long id;	
+	
 	
 	@Column(name="hotel_name")
 	private String hotel_name;
@@ -36,6 +40,10 @@ public class ReservationsBinnacle {
 	
 	@Column(name="end_date")
 	private Date end_date;
+	
+	
+	@Column( columnDefinition = "boolean default false",name="cancel")
+	private Boolean cancel;
 
 	public Long getId() {
 		return id;
@@ -100,4 +108,13 @@ public class ReservationsBinnacle {
 	public void setEnd_date(Date end_date) {
 		this.end_date = end_date;
 	}
+
+	public Boolean getCancel() {
+		return cancel;
+	}
+
+	public void setCancel(Boolean cancel) {
+		this.cancel = cancel;
+	}	
+	
 }

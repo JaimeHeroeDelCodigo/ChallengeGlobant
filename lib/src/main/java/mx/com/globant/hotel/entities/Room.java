@@ -1,5 +1,7 @@
 package mx.com.globant.hotel.entities;
 
+import java.util.Objects;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 
@@ -30,6 +32,7 @@ public class Room {
 	@Column 
 	private Long idHotel;
 	 
+	private Short noKids;
 	
 	@ManyToOne
 	@JoinColumn(name="reservation_id", nullable=true)
@@ -41,7 +44,11 @@ public class Room {
 	
 	@ManyToOne
     @JoinColumn(name="hotel_id", nullable=true) 
-	private Hotel hotel;	
+	private Hotel hotel;
+	
+	public Room() {
+		this.noKids = 0;
+	}
 	
 	public Long getId() {
 		return room_id;
@@ -91,7 +98,50 @@ public class Room {
 	public void setIdHotel(Long idHotel) {
 		this.idHotel = idHotel;
 	}	
+	public Long getRoom_id() {
+		return room_id;
+	}
+	public void setRoom_id(Long room_id) {
+		this.room_id = room_id;
+	}
+	public Short getNoKids() {
+		return noKids;
+	}
+	public void setNoKids(Short noKids) {
+		this.noKids = noKids;
+	}
+	public Reservation getReservation() {
+		return reservation;
+	}
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}
+	public RoomType getRoomType() {
+		return roomType;
+	}
+	public void setRoomType(RoomType roomType) {
+		this.roomType = roomType;
+	}
 	
+	
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(room_id);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		//if (getClass() != obj.getClass())
+			//return false;
+		Room other = (Room) obj;
+		return Objects.equals(room_id, other.room_id);
+	}
+
 	@Override
 	public String toString() {
 		return "Room [room_id=" + room_id + ", name=" + name + ", description=" + description + ", floor=" + floor
