@@ -119,7 +119,10 @@ public class ReservationService {
 	
 	// Metodo para agregar invitado a reservación	
 	public Reservation addGuestToRoom(Guest guest,Long idReserv,Room room) throws GuestLimitExceededException,
-	                                                                        GuestAlreadyRegisteredException {		
+	                                                                        GuestAlreadyRegisteredException,
+	                                                                        GuestNotExistingException,
+	                                                                        GuestAlreadyVIPException,
+	                                                                        GuestNotAvailableVIPException {		
 		Integer totalGuests = 0;
 		ArrayList<Reservation> reservations = (ArrayList<Reservation>) reservationRepository.findAll();
 		for (Iterator<Reservation> reserv = reservations.iterator();reserv.hasNext();) {
@@ -137,7 +140,8 @@ public class ReservationService {
 			throw new GuestAlreadyRegisteredException();
 	  	else
 	  		guests.add(guest);
-		    r.setGuests(guests);		    
+		    r.setGuests(guests);
+		    vipMakeGuest(guest.getId(),true);
 		    
 	   return reservationRepository.save(r);		
 	}	
@@ -166,7 +170,7 @@ public class ReservationService {
 					break;
 				}					
 		}
-		if(cont<5)
+		if(cont>=5)
 			throw new GuestNotAvailableVIPException();		
 		return guest;
 	}

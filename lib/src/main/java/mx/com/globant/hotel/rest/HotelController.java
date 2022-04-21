@@ -1,10 +1,12 @@
 package mx.com.globant.hotel.rest;
 
-import java.util.logging.Logger;
+//import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.SimpleFormatter;
+//import java.util.logging.FileHandler;
+//import java.util.logging.SimpleFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +27,9 @@ import mx.com.globant.hotel.service.HotelService;
 @RequestMapping(value="/api/hoteles")
 public class HotelController {
 	
-	Logger log= Logger.getLogger("LOG CRUD HBN ");
-	FileHandler fileHandler;	
-	
+	//Logger log= Logger.getLogger("LOG CRUD HBN ");
+	//FileHandler fileHandler;	
+	Logger log = LogManager.getLogger();
 	
 	@Autowired
 	private HotelService hotelService;
@@ -38,12 +40,12 @@ public class HotelController {
 		try {	        	
 			System.out.println("\n*****************************************\nEL hotel es\n");
 			System.out.println(nuevoHotel);
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			
 			hotelService.create(nuevoHotel);			
 			log.info("\nSe da de alta el hotel " + nuevoHotel.getName());
@@ -59,12 +61,12 @@ public class HotelController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<HttpStatus> borrarHotel(@PathVariable Long id) {
 		try {			
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			
 			hotelService.deleteById(id);			
 			log.info("\nSe da de baja el hotel con id " + id);
@@ -80,14 +82,14 @@ public class HotelController {
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Hotel> consultaHotel(@PathVariable Long  id) {
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			
-			 Hotel hotel = hotelService.getById(id)
+			Hotel hotel = hotelService.getById(id)
 					                   .orElseThrow(
 					                		   ()->new NullPointerException("No existe el hotel con el id indicado"));			 
 			 log.info("\nSe realiza la consulta el hotel con id " + id);
@@ -109,12 +111,12 @@ public class HotelController {
 	@GetMapping
 	public ResponseEntity<List<Hotel>> consultaGeneralHotel() {		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			ArrayList<Hotel> listaHotel = (ArrayList<Hotel>) hotelService.getAll();			
 			log.info("\nSe realiza la consulta de hoteles");			 
 			return new ResponseEntity<List<Hotel>>(listaHotel, HttpStatus.OK);			 			
@@ -130,12 +132,12 @@ public class HotelController {
 	@PatchMapping	
 	public ResponseEntity<Hotel> actualizarHotel(@RequestBody Hotel hotelAct) {		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			Hotel hotel= hotelService.getById(hotelAct.getHotel_id())
 		                             .orElseThrow( 

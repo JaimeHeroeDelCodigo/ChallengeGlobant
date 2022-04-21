@@ -2,9 +2,11 @@ package mx.com.globant.hotel.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+//import java.util.logging.FileHandler;
+//import java.util.logging.Logger;
+//import java.util.logging.SimpleFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,49 +20,70 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import mx.com.globant.hotel.entities.Guest;
+import mx.com.globant.hotel.entities.Kid;
 import mx.com.globant.hotel.service.GuestService;
+import mx.com.globant.hotel.service.KidService;
 
 @RestController
 @RequestMapping(value="/api/guest")
 public class GuestController {
-	
-	Logger log= Logger.getLogger("LOG CRUD HBN ");
-	FileHandler fileHandler;	
+	Logger log = LogManager.getLogger();
+	//Logger log= Logger.getLogger("LOG CRUD HBN ");
+	//FileHandler fileHandler;	
 	
 	@Autowired
-	private GuestService guestService;	
+	private GuestService guestService;
+	@Autowired 
+	private KidService kidService;
 
 	@PostMapping
 	public ResponseEntity<Guest> altaGuest(@RequestBody Guest nuevoGuest){		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
+			//fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+	                //+ "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
+	                //log.addHandler(fileHandler);
+			//SimpleFormatter simpleFormatter = new SimpleFormatter();
+			//fileHandler.setFormatter(simpleFormatter);
+			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
+			guestService.create(nuevoGuest);			
+			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
+			return new ResponseEntity<Guest>(nuevoGuest,HttpStatus.CREATED);			
+		}catch(Exception e){
+			//log.info("Error al dar de alta un invitado: " + e.getMessage());
+			e.printStackTrace();
+			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}		
+	}
+	
+	@PostMapping("/kid")
+	public ResponseEntity<Kid> agregarNinio(@RequestBody Kid kid) {
+		try {
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
 			fileHandler.setFormatter(simpleFormatter);
-			
-			guestService.create(nuevoGuest);			
-			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
-			return new ResponseEntity<Guest>(nuevoGuest,HttpStatus.CREATED);
-			
-		}catch(Exception e){
-			log.info("Error al dar de alta un invitado: " + e.getMessage());
+			*/
+			kidService.create(kid);
+			log.info("\nSe da de alta el menor de edad para el guest con id " +
+			                                                  kid.getId_guest());
+			return new ResponseEntity<Kid>(kid,HttpStatus.CREATED);			
+		}catch(Exception e) {
+			log.info("Error al agregar menor de edad a un invitado: " + e.getMessage());
 			e.printStackTrace();
-			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-		
+			return new ResponseEntity<Kid>(HttpStatus.INTERNAL_SERVER_ERROR);	
+		}		
 	}
 	
 	@DeleteMapping("/{id}")
 	public void borrarGuest(@PathVariable Long  id) {
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+            /*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			
 			guestService.deleteById(id);			
 			log.info("\nSe da de baja el invitado con id " + id);			
@@ -69,18 +92,16 @@ public class GuestController {
 			log.info("Error al dar de baja a un invitado: " + e.getMessage());
 			e.printStackTrace();
 		}		
-	}
-	
+	}	
 	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Guest> consultaGuest(@PathVariable Long  id) {
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/	
 			
 			 Guest guest = guestService
 					                   .getById(id)
@@ -98,41 +119,35 @@ public class GuestController {
 			log.info("Error al dar de realizar consulta por id " +id + "\n" + e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}			
-		
-	}
-	
+		}		
+	}	
 	
 	@GetMapping
 	public ResponseEntity<List<Guest>> consultaGeneralInvitados() {		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			ArrayList<Guest> listaInvitados = (ArrayList<Guest>) guestService.getAll();			
 			log.info("\nSe realiza la consulta de los invitados");			 
-			return new ResponseEntity<List<Guest>>(listaInvitados, HttpStatus.OK);			 			
-			
+			return new ResponseEntity<List<Guest>>(listaInvitados, HttpStatus.OK);			
 		}catch(Exception e) {
 			log.info("Error al realizar la consulta general\n" + e.getMessage());
 			e.printStackTrace();
 			return new ResponseEntity<List<Guest>>(HttpStatus.INTERNAL_SERVER_ERROR);		
-		}
-		
+		}		
 	}
 	
 	@PatchMapping	
 	public ResponseEntity<Guest> actualizarHotel(@RequestBody Guest guestAct) {		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			Guest guest = guestService.getById(guestAct.getId())
 		                             .orElseThrow( 

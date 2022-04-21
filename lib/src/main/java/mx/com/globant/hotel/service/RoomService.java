@@ -20,8 +20,7 @@ public class RoomService {
 	@Autowired
 	private RoomRepository roomRepository;	
 	@Autowired
-	private HotelService hotelService;
-	
+	private HotelService hotelService;	
 	@Autowired 
 	private ReservationRepository reservationRepository;
 	
@@ -52,8 +51,7 @@ public class RoomService {
 				         .findById(id)
 				         .orElseThrow(
 				             ()-> new NullPointerException("El cuarto con id " + id + "no existe"))
-				                       .getIdHotel();		
-	
+				                       .getIdHotel();	
 		ArrayList<Long> ids = new ArrayList<Long>();
 		reservationRepository
 		            .findAll()
@@ -64,28 +62,22 @@ public class RoomService {
 			throw new RoomInReservation();
 		else
 			roomRepository.deleteById(id);
-	}
-	
+	}	
 	public List<Room> getAll() {		
 		return roomRepository.findAll();
-	}
-	
+	}	
 	public Optional<Room> getById(Long id) {
 		Optional<Room> room = roomRepository.findById(id);		
 		return room;
-	}
-	
+	}	
 	public Room update(Room room) {
 		return roomRepository.save(room);
-	}
-	
-	
+	}	
 	private void extractIds( ArrayList<Long> lista,Set<Room> r){
 		r.forEach(  c -> 
 		              lista.add( c.getId()));		
-	}
-	
-	private void addKids(Short k,Room room) throws GuestLimitExceededException{
+	}	
+	public void addKids(Short k,Room room) throws GuestLimitExceededException{
 		if (k>room.getMax_guests())
 			throw new GuestLimitExceededException();
 		else {
@@ -93,5 +85,4 @@ public class RoomService {
 		   	room.setNoKids((short) (actKids + k));			
 		}	   	
 	}
-
 }

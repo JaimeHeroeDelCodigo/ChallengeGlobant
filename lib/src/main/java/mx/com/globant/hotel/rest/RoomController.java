@@ -2,9 +2,12 @@ package mx.com.globant.hotel.rest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.FileHandler;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+//import java.util.logging.FileHandler;
+//import java.util.logging.Logger;
+//import java.util.logging.SimpleFormatter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,10 +27,10 @@ import mx.com.globant.hotel.service.RoomService;
 @RestController
 @RequestMapping(value="/api/room")
 
-public class RoomController {
-	
-	Logger log= Logger.getLogger("LOG CRUD HBN ");
-	FileHandler fileHandler;	
+public class RoomController {	
+	//Logger log= Logger.getLogger("LOG CRUD HBN ");
+	//FileHandler fileHandler;
+	Logger log = LogManager.getLogger();
 	
 	@Autowired
 	private RoomService roomService;	
@@ -35,12 +38,12 @@ public class RoomController {
 	@PostMapping
 	public ResponseEntity<Room> altaRoom(@RequestBody Room nuevoRoom){		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			roomService.create(nuevoRoom);			
 			log.info("\nSe da de alta el cuarto " + nuevoRoom.getName());
@@ -55,11 +58,11 @@ public class RoomController {
 	@DeleteMapping("/{id}")
 	public void borrarRoom(@PathVariable Long id){		
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			roomService.deleteById(id);
 			log.info("\nSe da de baja el cuarto con id: " + id);	
@@ -76,11 +79,11 @@ public class RoomController {
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Room> consultaRoom(@PathVariable Long id){
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
 	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new  SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			Room cuartoConsulta = roomService.getById(id)
 					                         .orElseThrow(
@@ -103,12 +106,12 @@ public class RoomController {
 	@GetMapping
 	public ResponseEntity<List<Room>> consultaGeneralCuartos(){
 		try {
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);		
+			fileHandler.setFormatter(simpleFormatter);*/		
 			ArrayList<Room> listacuartos = (ArrayList<Room>) roomService.getAll();			
 			log.info("\nSe realiza la consulta de los invitados");			 
 			return new ResponseEntity<List<Room>>(listacuartos, HttpStatus.OK);
@@ -122,14 +125,13 @@ public class RoomController {
 	
 	@PatchMapping	
 	public ResponseEntity<Room> actualizarCuarto(@RequestBody Room roomAct) {
-		try {
-			
-			fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
+		try {			
+			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
 
 			log.addHandler(fileHandler);
 			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
+			fileHandler.setFormatter(simpleFormatter);*/
 			
 			Room room = roomService.getById(roomAct.getId())
 			                .orElseThrow( 
