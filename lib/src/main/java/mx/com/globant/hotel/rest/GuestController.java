@@ -40,17 +40,11 @@ public class GuestController {
 	public ResponseEntity<Guest> altaGuest(@RequestBody Guest nuevoGuest){		
 		try {
 			
-			//fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-	                //+ "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-	                //log.addHandler(fileHandler);
-			//SimpleFormatter simpleFormatter = new SimpleFormatter();
-			//fileHandler.setFormatter(simpleFormatter);
 			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
 			guestService.create(nuevoGuest);			
 			log.info("\nSe da de alta el invitado " + nuevoGuest.getFirst_name());
 			return new ResponseEntity<Guest>(nuevoGuest,HttpStatus.CREATED);			
-		}catch(Exception e){
-			//log.info("Error al dar de alta un invitado: " + e.getMessage());
+		}catch(Exception e){			
 			e.printStackTrace();
 			return new ResponseEntity<Guest>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}		
@@ -58,13 +52,7 @@ public class GuestController {
 	
 	@PostMapping("/kid")
 	public ResponseEntity<Kid> agregarNinio(@RequestBody Kid kid) {
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);
-			*/
+		try {			
 			kidService.create(kid);
 			log.info("\nSe da de alta el menor de edad para el guest con id " +
 			                                                  kid.getId_guest());
@@ -78,13 +66,7 @@ public class GuestController {
 	
 	@DeleteMapping("/{id}")
 	public void borrarGuest(@PathVariable Long  id) {
-		try {
-            /*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-                    + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/		
-			
+		try {			
 			guestService.deleteById(id);			
 			log.info("\nSe da de baja el invitado con id " + id);			
 			
@@ -96,13 +78,7 @@ public class GuestController {
 	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
 	public ResponseEntity<Guest> consultaGuest(@PathVariable Long  id) {
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/	
-			
+		try {		
 			 Guest guest = guestService
 					                   .getById(id)
 					                   .orElseThrow(
@@ -124,12 +100,7 @@ public class GuestController {
 	
 	@GetMapping
 	public ResponseEntity<List<Guest>> consultaGeneralInvitados() {		
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/		
+		try {				
 			ArrayList<Guest> listaInvitados = (ArrayList<Guest>) guestService.getAll();			
 			log.info("\nSe realiza la consulta de los invitados");			 
 			return new ResponseEntity<List<Guest>>(listaInvitados, HttpStatus.OK);			
@@ -142,13 +113,7 @@ public class GuestController {
 	
 	@PatchMapping	
 	public ResponseEntity<Guest> actualizarHotel(@RequestBody Guest guestAct) {		
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/
-			
+		try {			
 			Guest guest = guestService.getById(guestAct.getId())
 		                             .orElseThrow( 
 		                            		 ()-> new NullPointerException("El invitado no existe"));			

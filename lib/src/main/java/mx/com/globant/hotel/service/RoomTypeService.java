@@ -2,10 +2,8 @@ package mx.com.globant.hotel.service;
 
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import mx.com.globant.hotel.entities.RoomType;
 import mx.com.globant.hotel.repository.RoomTypeRepository;
 
@@ -15,11 +13,11 @@ public class RoomTypeService {
 	@Autowired
     private RoomTypeRepository roomTypeRepository;
 	
-	public void create(RoomType roomType){
+	public RoomType create(RoomType roomType){
 		if(roomType ==null)
 			throw new NullPointerException("La entidad a guardar no puede ser null");
 		else 
-			roomTypeRepository.save(roomType);	
+			return roomTypeRepository.save(roomType);	
 	}
 	
 	public void deleteById(Long id) {

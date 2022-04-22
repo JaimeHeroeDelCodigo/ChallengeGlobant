@@ -1,4 +1,6 @@
 package mx.com.globant.hotel.entities;
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -9,7 +11,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="room_type")
-public class RoomType {	
+public class RoomType implements Serializable {	
+	private static final long serialVersionUID = -1319629298128420049L;
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "id")

@@ -34,13 +34,7 @@ public class GuestTypeController {
 
 	@PostMapping
 	public ResponseEntity<GuestType> altaGuestType(@RequestBody GuestType nuevoGuestType){		
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-	                + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/
-			
+		try {			
 			guestTypeService.create(nuevoGuestType);			
 			log.info("\nSe da de alta el tipo de invitado " + nuevoGuestType.getName());
 			return new ResponseEntity<GuestType>(nuevoGuestType,HttpStatus.CREATED);			
@@ -53,14 +47,7 @@ public class GuestTypeController {
 	
 	@DeleteMapping("/{id}")
 	public void borrarGuestType(@PathVariable Long id) {
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-                    + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/		
-			
+		try {			
 			guestTypeService.deleteById(id);
 						
 			log.info("\nSe da de baja el tipo de invitado con id " + id);			
@@ -73,14 +60,7 @@ public class GuestTypeController {
 	
 	@RequestMapping(value= "/consultaId/{id}", method = RequestMethod.GET)
 	public ResponseEntity<GuestType> consultaGuestType(@PathVariable Long  id) {
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/		
-			
+		try {		
 			 GuestType guestType = guestTypeService
 					                   .getById(id)
 					                   .orElseThrow(
@@ -103,13 +83,7 @@ public class GuestTypeController {
 	
 	@GetMapping
 	public ResponseEntity<List<GuestType>> consultaGeneralTipoInvitado() {		
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/		
+		try {					
 			ArrayList<GuestType> listaInvitados = (ArrayList<GuestType>) guestTypeService.getAll();			
 			log.info("\nSe realiza la consulta de los tipos de invitado");			 
 			return new ResponseEntity<List<GuestType>>(listaInvitados, HttpStatus.OK);			 			
@@ -123,14 +97,7 @@ public class GuestTypeController {
 	
 	@PatchMapping	
 	public ResponseEntity<GuestType> actualizarHotel(@RequestBody GuestType guestTypeAct) {		
-		try {
-			/*fileHandler = new FileHandler("C:/Users/jaime.desantiago/eclipse-workspace/"
-					                     + "mx.com.globant.hotel/lib/src/main/resources/LOG-HBN.txt");
-			
-			log.addHandler(fileHandler);
-			SimpleFormatter simpleFormatter = new SimpleFormatter();
-			fileHandler.setFormatter(simpleFormatter);*/
-			
+		try {		
 			GuestType guestType = guestTypeService
 					                 .getById(guestTypeAct.getId())
 		                             .orElseThrow( 
